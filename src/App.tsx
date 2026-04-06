@@ -153,12 +153,21 @@ function Navbar() {
 }
 
 function Hero() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+
   return (
-    <section id="home" className="relative pt-24 md:pt-32 pb-24 overflow-hidden bg-dark min-h-screen flex items-center">
+    <section ref={ref} id="home" className="relative pt-24 md:pt-32 pb-24 overflow-hidden bg-dark min-h-screen flex items-center">
       <div className="absolute inset-0 bg-noise opacity-[0.05] pointer-events-none"></div>
       
       <div className="max-w-[1400px] mx-auto px-6 relative z-10 w-full">
         <motion.div
+          style={{ y, opacity }}
           initial={{ opacity: 0, scale: 0.98, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.21, 0.47, 0.32, 0.98] }}
@@ -202,8 +211,15 @@ function Brands() {
 }
 
 function About() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   return (
-    <section id="about" className="py-24 bg-dark relative overflow-hidden">
+    <section ref={ref} id="about" className="py-24 bg-dark relative overflow-hidden">
       <div className="absolute inset-0 bg-noise opacity-5 pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -246,6 +262,7 @@ function About() {
           </motion.div>
 
           <motion.div
+            style={{ y }}
             initial={{ opacity: 0, scale: 0.95, x: 20 }}
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true }}
@@ -283,8 +300,15 @@ function About() {
 }
 
 function Work() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   return (
-    <section id="work" className="py-24 bg-darker relative overflow-hidden">
+    <section ref={ref} id="work" className="py-24 bg-darker relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div 
@@ -323,6 +347,7 @@ function Work() {
           </motion.div>
 
           <motion.div
+            style={{ y }}
             initial={{ opacity: 0, scale: 0.95, x: 20 }}
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true }}
@@ -342,8 +367,15 @@ function Work() {
 }
 
 function Testimonials() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   return (
-    <section className="py-24 bg-dark overflow-hidden relative">
+    <section ref={ref} className="py-24 bg-dark overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -388,6 +420,7 @@ function Testimonials() {
           </motion.div>
 
           <motion.div
+            style={{ y }}
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -408,8 +441,15 @@ function Testimonials() {
 }
 
 function Contact() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   return (
-    <section id="contact" className="py-24 bg-dark text-white relative overflow-hidden">
+    <section ref={ref} id="contact" className="py-24 bg-dark text-white relative overflow-hidden">
       <div className="absolute inset-0 bg-noise opacity-10 pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -462,6 +502,7 @@ function Contact() {
           </motion.div>
 
           <motion.div
+            style={{ y }}
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
