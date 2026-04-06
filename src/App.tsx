@@ -16,7 +16,7 @@ import HoverFooter from './components/ui/hover-footer-demo';
 const fadeIn = {
   initial: { opacity: 0, y: 30 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
+  viewport: { once: true, margin: "-50px" },
   transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] },
   className: "will-change-transform"
 };
@@ -24,7 +24,7 @@ const fadeIn = {
 const staggerContainer = {
   initial: { opacity: 0 },
   whileInView: { opacity: 1 },
-  viewport: { once: true, margin: "-100px" },
+  viewport: { once: true, margin: "-50px" },
   transition: { staggerChildren: 0.15 }
 };
 
@@ -173,7 +173,7 @@ function Hero() {
 function Brands() {
   const brands = ["ACME CORP", "GLOBALTECH", "NEXUS", "PULSE", "VERTEX"];
   return (
-    <section className="py-16 bg-dark border-y border-white/5 overflow-hidden">
+    <section className="py-12 md:py-16 bg-dark border-y border-white/5 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <motion.p 
           {...fadeIn}
@@ -181,18 +181,12 @@ function Brands() {
         >
           Recent clients & partners
         </motion.p>
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5 }}
-          className="relative flex overflow-hidden"
-        >
-          <div className="flex items-center gap-20 animate-marquee whitespace-nowrap opacity-30 grayscale hover:grayscale-0 transition-all duration-1000">
-            {[...Array(8)].map((_, i) => (
+        <div className="relative flex overflow-hidden">
+          <div className="flex items-center gap-12 md:gap-20 animate-marquee whitespace-nowrap opacity-30 grayscale hover:grayscale-0 transition-all duration-1000 will-change-transform">
+            {[...Array(4)].map((_, i) => (
               <React.Fragment key={i}>
                 {brands.map((brand, j) => (
-                  <div key={`${i}-${j}`} className="text-2xl font-black tracking-tighter text-white hover:text-primary transition-colors duration-500 cursor-default">
+                  <div key={`${i}-${j}`} className="text-xl md:text-2xl font-black tracking-tighter text-white hover:text-primary transition-colors duration-500 cursor-default">
                     {brand.includes('TECH') ? (
                       <>GLOBAL<span className="font-light">TECH</span></>
                     ) : brand}
@@ -201,7 +195,7 @@ function Brands() {
               </React.Fragment>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

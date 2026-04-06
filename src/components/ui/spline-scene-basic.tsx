@@ -19,18 +19,28 @@ const staggerContainer = {
  
 export function SplineSceneBasic() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    
+    // Delay loading the heavy Spline scene to prevent initial render blocking
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 500);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
     <Card className="w-full min-h-[500px] md:h-[700px] bg-gradient-to-b from-black to-neutral-950 relative overflow-hidden border-white/10 shadow-2xl">
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {!isMobile ? (
+        {!isMobile && isLoaded ? (
           <div className="absolute h-full w-[200%] left-[-60%] md:left-[-40%] lg:left-[-30%]">
             <SplineScene 
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
