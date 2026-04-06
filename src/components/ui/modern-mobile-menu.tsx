@@ -47,13 +47,15 @@ const InteractiveMenu: React.FC<InteractiveMenuProps> = ({ items, accentColor })
 
   useEffect(() => {
     const setLineWidth = () => {
-      const activeItemElement = itemRefs.current[activeIndex];
-      const activeTextElement = textRefs.current[activeIndex];
+      window.requestAnimationFrame(() => {
+        const activeItemElement = itemRefs.current[activeIndex];
+        const activeTextElement = textRefs.current[activeIndex];
 
-      if (activeItemElement && activeTextElement) {
-        const textWidth = activeTextElement.offsetWidth;
-        activeItemElement.style.setProperty('--lineWidth', `${textWidth}px`);
-      }
+        if (activeItemElement && activeTextElement) {
+          const textWidth = activeTextElement.offsetWidth;
+          activeItemElement.style.setProperty('--lineWidth', `${textWidth}px`);
+        }
+      });
     };
 
     setLineWidth();

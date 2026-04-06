@@ -125,7 +125,7 @@ function AnimatedCard({
         x: "-50%",
         bottom: 0,
       }}
-      className="absolute flex h-[300px] w-[324px] items-center justify-center overflow-hidden rounded-t-2xl border-x border-t border-white/10 bg-card/80 backdrop-blur-xl p-1 shadow-2xl will-change-transform sm:w-[512px]"
+      className="absolute flex h-[300px] w-[90vw] max-w-[324px] items-center justify-center overflow-hidden rounded-t-2xl border-x border-t border-white/10 bg-dark/80 backdrop-blur-xl p-1 shadow-2xl will-change-transform sm:max-w-[512px]"
     >
       <CardContent contentType={card.contentType} />
     </motion.div>

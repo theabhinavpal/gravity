@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React, { useState, useEffect } from "react"
 import { motion } from "motion/react"
 import { Warp } from "@paper-design/shaders-react"
 import { 
@@ -68,6 +68,15 @@ const features: Feature[] = [
 ]
 
 export default function FeaturesCards() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const getShaderConfig = (index: number) => {
     const configs = [
       {
@@ -184,20 +193,22 @@ export default function FeaturesCards() {
                 className="relative h-[360px] group will-change-transform"
               >
                 <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                  <Warp
-                    style={{ height: "100%", width: "100%" }}
-                    proportion={shaderConfig.proportion}
-                    softness={shaderConfig.softness}
-                    distortion={shaderConfig.distortion}
-                    swirl={shaderConfig.swirl}
-                    swirlIterations={shaderConfig.swirlIterations}
-                    shape={shaderConfig.shape}
-                    shapeScale={shaderConfig.shapeScale}
-                    scale={1}
-                    rotation={0}
-                    speed={0.8}
-                    colors={shaderConfig.colors}
-                  />
+                  {!isMobile && (
+                    <Warp
+                      style={{ height: "100%", width: "100%" }}
+                      proportion={shaderConfig.proportion}
+                      softness={shaderConfig.softness}
+                      distortion={shaderConfig.distortion}
+                      swirl={shaderConfig.swirl}
+                      swirlIterations={shaderConfig.swirlIterations}
+                      shape={shaderConfig.shape}
+                      shapeScale={shaderConfig.shapeScale}
+                      scale={1}
+                      rotation={0}
+                      speed={0.8}
+                      colors={shaderConfig.colors}
+                    />
+                  )}
                 </div>
 
                 <div className="relative z-10 p-8 rounded-3xl h-full flex flex-col bg-black/85 border border-white/10 group-hover:border-primary/50 group-hover:bg-black/70 transition-all duration-500 glass-hover">

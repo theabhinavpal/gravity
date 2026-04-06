@@ -36,11 +36,23 @@ const textReveal = {
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 50);
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const menuItems = [
     { label: 'Home', icon: Home, href: '#home' },
@@ -51,30 +63,98 @@ function Navbar() {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-6 pointer-events-none ${isScrolled ? 'bg-dark/80 backdrop-blur-2xl py-3 border-b border-white/5 shadow-2xl shadow-black/50' : 'bg-transparent py-8'}`}>
-      <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
-        {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group cursor-pointer pointer-events-auto">
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-lg shadow-primary/20">
-            <Zap size={20} className="text-white fill-white" />
-          </div>
-          <div className="text-2xl font-black tracking-tighter text-white uppercase">
-            Gravity<span className="text-primary">.</span>
-          </div>
-        </a>
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-6 pointer-events-none ${isScrolled ? 'bg-dark/80 backdrop-blur-2xl py-3 border-b border-white/5 shadow-2xl shadow-black/50' : 'bg-transparent py-8'}`}>
+        <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-3 group cursor-pointer pointer-events-auto">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-lg shadow-primary/20">
+              <Zap size={20} className="text-white fill-white" />
+            </div>
+            <div className="text-2xl font-black tracking-tighter text-white uppercase">
+              Gravity<span className="text-primary">.</span>
+            </div>
+          </a>
 
-        {/* Navigation Menu */}
-        <div className="pointer-events-auto">
-          <InteractiveMenu items={menuItems} accentColor="#fc432a" />
+          {/* Desktop Navigation Menu */}
+          <div className="hidden md:block pointer-events-auto">
+            <InteractiveMenu items={menuItems} accentColor="#fc432a" />
+          </div>
+
+          {/* Mobile Hamburger Button */}
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-3 bg-white/5 border border-white/10 rounded-xl text-white pointer-events-auto hover:bg-white/10 transition-colors z-[60]"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[55] bg-dark/98 backdrop-blur-3xl md:hidden flex flex-col items-center justify-center p-6"
+          >
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="grid grid-cols-2 gap-4 w-full max-w-md"
+            >
+               {menuItems.map((item, index) => (
+                 <motion.a
+                   key={item.label}
+                   href={item.href}
+                   initial={{ opacity: 0, scale: 0.8 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   transition={{ delay: index * 0.05 }}
+                   onClick={() => setIsOpen(false)}
+                   className="flex flex-col items-center justify-center aspect-square rounded-[2rem] bg-white/5 border border-white/10 hover:border-primary/50 transition-all group active:scale-95"
+                 >
+                   <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                     <item.icon size={32} className="text-primary" />
+                   </div>
+                   <span className="text-xs font-black text-white uppercase tracking-[0.2em]">
+                     {item.label}
+                   </span>
+                 </motion.a>
+               ))}
+            </motion.div>
+            
+            {/* Mobile Contact Info */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="mt-12 pt-8 border-t border-white/5 w-full max-w-md flex flex-col items-center gap-4"
+            >
+              <div className="flex flex-col items-center gap-1">
+                <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em]">Get in touch</p>
+                <p className="text-white font-bold text-sm">hello@projectgravity.com</p>
+              </div>
+              <div className="flex gap-4 mt-2">
+                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                  <Globe size={18} />
+                </div>
+                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-primary transition-colors">
+                  <Send size={18} />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
 function Hero() {
   return (
-    <section id="home" className="relative pt-32 pb-24 overflow-hidden bg-dark min-h-screen flex items-center">
+    <section id="home" className="relative pt-24 md:pt-32 pb-24 overflow-hidden bg-dark min-h-screen flex items-center">
       <div className="absolute inset-0 bg-noise opacity-[0.05] pointer-events-none"></div>
       
       <div className="max-w-[1400px] mx-auto px-6 relative z-10 w-full">
